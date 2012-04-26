@@ -12,31 +12,23 @@ from time import sleep
 
 # config block
 api_settings = {
-        "consumer_key": "JQgjpOiIgwX7JIXK0hviQ",
-        "consumer_secret":"0pHDdnDMaQzOh7lLFeZOEHeJzXRX9DNPuTKuSNEko",
+        "consumer_key": "KEYGOESHERE",
+        "consumer_secret":"SECRETGOESHERE",
         }
 
 print "Starting twitter spammer:"
 
-# db.update_user("val_lyashov",
+# db.update_user("USER",
 #     api_settings['access_token'],
 #     api_settings['access_token_secret'],
 #     api_settings['oauth_pin'])
 """ Initial settings config - assuming they don't change per app."""
-# db.add_settings(api_settings['consumer_key'], api_settings['consumer_secret'],
-#                 api_settings['oauth_token'], api_settings['oauth_token_secret'])
+# db.add_settings(api_settings['consumer_key'], api_settings['consumer_secret'])
 # """ Various 3 legged calls."""
 # control.get_token()
 # control.get_pin()
 # control.get_access_token()
 
-user_data = {"oauth_pin" : "3859659",
-    "oauth_token" : "hx9qxj7RsvnQOnmAqEZjXoFUrqAj436wqwKHyDUdzdk",
-    "oauth_token_secret" : "4NdzqIeZeJZYpVUqKKZ42KpHTsp4QLsKIZcHhykhXQ",
-    "access_token" : "554877503-hmzCkaOdP9veohFL8BCprRftX7vE4S6eQgiGxJwg",
-    "access_token_secret" : "PP3Pdyyq4WZ4cvJG8dK5aec8INKE6IZ4lus5gBMbX4",
-    "uid" : "GiantLeap125"
-    }
 
 """ DB data retrieval. """
 db = twitter_db.TwitterDB()
