@@ -1,14 +1,17 @@
 PY_TWEETBOT
---------------------
-A dirty script for automated tweeting. Packaged with an import script to read
+=============
+A dirty script for automated tweeting.
+Packaged with an import script to read
 tweets from an Excel file, and stores into sqlite3 DB.
 
-# Features
+Features
+--------
 * Throttle and queue
 * Multi-user support
 * ...stuff.
 
-# TODO:
+TODO
+--------
 * pretty much everything
 * oauth needs better flow control
 * more DB options
