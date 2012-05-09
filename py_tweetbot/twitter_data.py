@@ -6,7 +6,7 @@ from urlparse import parse_qs
 import sys
 from time import sleep
 
-from xml.dom.minidom import parseString 
+from xml.dom.minidom import parseString
 
 # constants
 REQUEST_TOKEN_URL = 'https://api.twitter.com/oauth/request_token'
@@ -41,10 +41,9 @@ class TwitterData:
         print "Please go to: " + AUTHORIZATION_URL + "?oauth_token=" + self.oauth_token
         self.oauth_pin = raw_input("Enter pin: ")
 
-
     def get_access_token(self):
         print "Running access token retrieval"
-        oauth_hook = OAuthHook(self.oauth_token,self.oauth_token_secret,self.oauth_pin,self.consumer_key,self.consumer_secret)
+        oauth_hook = OAuthHook(self.oauth_token, self.oauth_token_secret, self.oauth_pin, self.consumer_key, self.consumer_secret)
         client = requests.session(hooks={'pre_request': oauth_hook})
         response = client.get(ACCESS_TOKEN_URL)
         if response.status_code == 200:
@@ -54,7 +53,7 @@ class TwitterData:
             self.access_token_secret = response['oauth_token_secret'].pop()
         elif response.status_code == 401:
             error = parseString(response.content).getElementsByTagName("error")
-            error = error[0].firstChild.data 
+            error = error[0].firstChild.data
             print "Error: ", error
 
     def test_get_access_token(self, block):
@@ -69,10 +68,8 @@ class TwitterData:
             self.access_token_secret = response['oauth_token_secret'].pop()
         elif response.status_code == 401:
             error = parseString(response.content).getElementsByTagName("error")
-            error = error[0].firstChild.data 
+            error = error[0].firstChild.data
             print "Error: ", error
-            
-
 
     def post_update(self, message):
         if len(message) > 140:

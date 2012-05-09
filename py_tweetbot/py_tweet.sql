@@ -25,3 +25,16 @@ CREATE TABLE sent_tweets(
     FOREIGN KEY (tweetID) REFERENCES tweets(tweetID),
     FOREIGN KEY (uID) REFERENCES users(uID)
     );
+
+CREATE TABLE padding_tweets(
+    pTweetID INTEGER PRIMARY KEY,
+    message TEXT
+    );
+
+CREATE TABLE sent_padding_tweets(
+    pTweetID INTEGER,
+    uID INTEGER,
+    time DATE,
+    FOREIGN KEY (pTweetID) REFERENCES padding_tweets(pTweetID),
+    FOREIGN KEY (uID) REFERENCES users(uID)
+    );

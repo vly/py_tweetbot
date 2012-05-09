@@ -1,11 +1,10 @@
 import sqlite3
 import sys
-import time 
+import time
 
 class TwitterDB:
     def __init__(self):
-        self.connection = sqlite3.connect("py_tweet.db")
-        self.cursor = self.connection.cursor()
+        self.open_db()
 
     def open_db(self):
         self.connection = sqlite3.connect("py_tweet.db")
@@ -70,7 +69,7 @@ class TwitterDB:
 
     def get_all_users(self):
         self.cursor.execute('SELECT * FROM users')
-        return self.cursor.fetchall() 
+        return self.cursor.fetchall()
 
     def get_settings(self):
         """ Returns a dictionary of all settings. """
@@ -79,7 +78,7 @@ class TwitterDB:
             settings = self.cursor.fetchall()[0]
             settings = {"consumer_key" : settings[0],
                         "consumer_secret" : settings[1]
-                        }
+            }
             return settings
         except sqlite3.Error, e:
             print "Error %s:" % e.args[0]
@@ -89,11 +88,12 @@ class TwitterDB:
                 self.cursor.close()
 
     def add_settings(self, consumer_key, consumer_secret):
-        self.cursor.execute('INSERT INTO settings VALUES(?,?,?,?)', (consumer_key, consumer_secret))
+        self.cursor.execute('INSERT INTO settings VALUES(?,?)', (consumer_key, consumer_secret))
         self.connection.commit()
 
     def update_settings(self, consumer_key, consumer_secret):
-        print "Nothing to see here!"
+        self.cursor.execute('UPDATE settings SET consumer_key=?, consumer_secret=?', (consumer_key, consumer_secret))
+        self.connection.commit()
 
     def add_tweet(self, message):
         self.cursor.execute('INSERT INTO tweets VALUES(NULL,?)',(message,))
@@ -127,6 +127,37 @@ class TwitterDB:
             if self.cursor:
                 self.cursor.close()
 
+    def add_padding_tweet(self, message):
+        self.cursor.execute('INSERT INTO padding_tweets VALUES(NULL,?)',(message,))
+        self.connection.commit()
+
+    def padding_tweet_queue(self, limit=None):
+        try:
+            self.open_db()
+            maximum = ""
+            if limit is not None:
+                maximum = "LIMIT " + str(limit)
+            self.cursor.execute('SELECT * FROM padding_tweets t WHERE t.pTweetID NOT IN (SELECT pTweetID FROM sent_padding_tweets s)' + maximum)
+            return self.cursor.fetchall()
+        except sqlite3.Error, e:
+            print "Error %s:" % e.args[0]
+            sys.exit(1)
+        finally:
+            if self.cursor:
+                self.cursor.close()
+
+    def send_padding_tweet(self, pTweetID, uID):
+        try:
+            self.open_db()
+            now = time.strftime('%X %x')
+            self.cursor.execute('INSERT INTO sent_padding_tweets VALUES(?,?,?)',(pTweetID, uID, now))
+            self.connection.commit()
+        except sqlite3.Error, e:
+            print "Error %s:" % e.args[0]
+            sys.exit(1)
+        finally:
+            if self.cursor:
+                self.cursor.close()
+
     def close(self):
         self.cursor.close()
-
